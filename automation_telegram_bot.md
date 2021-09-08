@@ -1,13 +1,13 @@
 # Adding BOS-Telegram Bot to your startup scripts
 
-Joko explains in his guide [Jokos Guide](https://btc21.de/lightning-node-bot/) how to setup your Telegram Bot on the raspiblitz. Its very good and because I just added it to my startup routing
+Joko explains in his guide [Jokos Guide](https://btc21.de/lightning-node-bot/) how to setup your Telegram Bot on the raspiblitz. Its very good and because I just added it to my startup routine
 I want to share it.
 
 Automation is only possbile if you have set up the connection to the telegram bot before, so you don't have to paste the Telegram API Token anymore.
 
-I will use the Systemd Software Manger Tool (part of every linux distribution) to do this. I want to avoid any complicated details and jump in:
+I will use the Systemd Software Manger Tool (part of every linux distribution) to do this. I want to avoid any complicated details and jump right in:
 
-##Checklist
+## Checklist
 
 1. Login via ssh as admin: `ssh admin@ip.ip.ip.ip`
 2. Change to the following directory: `cd /etc/systemd/system/`
