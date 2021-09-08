@@ -24,7 +24,7 @@ I will use the Systemd Software Manger Tool (part of every linux distribution) t
 
 
     [Service] 
-    ExecStart=/home/bos/.npm-global/bin/bos telegram--connect VERBINDUNGSCODE
+    ExecStart=/home/bos/.npm-global/bin/bos telegram --connect VERBINDUNGSCODE
     User=bos
     Restart=always
     TimeoutSec=120
