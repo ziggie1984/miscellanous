@@ -14,7 +14,8 @@ I will use the Systemd Software Manger Tool (part of every linux distribution) t
 3. create a so called unit-file: `sudo touch bos-telegram.service`
 4. open file with: `sudo nano bos-telegram.service`
 5. copy the following content into it, change VERBINDUNGSCODE with your own code:
-    ```# Systemd unit for Bos-Telegram Bot
+    ```
+    # Systemd unit for Bos-Telegram Bot
     # /etc/systemd/system/bos-telegram.service
 
     [Unit]
