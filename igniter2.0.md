@@ -5,7 +5,7 @@ This tool is used to ignite ROFs or can also be used to rebalance a specific cha
 ## Prerequesites 
 * NodeJS
 * Own LND Node running with a Version not older than v0.11.0-beta (tested only on v0.13.1-beta)
-* Installed ln-service [ln-service](https://github.com/alexbosworth/ln-service.git) how to is explained further in the text
+* Installed [ln-service](https://github.com/alexbosworth/ln-service.git) how to is explained further in the text
 
 ## How to use the tool
 
