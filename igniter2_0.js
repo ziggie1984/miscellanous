@@ -45,8 +45,17 @@ const {lnd} = await authenticatedLndGrpc({
   //amount to Send
 
   const amount_sats = 10
+  
+  
+    //set max fee you are willing to pay Default 100 ppm
 
+  const feerate = 500
 
+  //or set to a specific value
+  const max_fee_sats =  feerate * Math.pow(10, -6) * amount_sats
+
+  
+  
   //Final Payment or Just Probing
   const final_payment = false
 
@@ -142,6 +151,24 @@ const {lnd} = await authenticatedLndGrpc({
 
     console.log('Final Route: ')
     console.log(route)
+  
+    const max_fee_msats = max_fee_sats * 1000
+
+    if(parseInt(route.fee_mtokens) <= max_fee_msats){
+
+      console.log("Fee are good to go")
+      console.log("Fees in sats: " + route.fee + " <= Fee Target: " + Math.round(max_fee_sats))
+      console.log("Fees in msats: " + route.fee_mtokens + " <= Fee Target: " + max_fee_msats)
+
+
+    }
+    else{
+      console.log("Fee Target is too low")
+      console.log("Fees in sats: " + route.fee + " > = Fee Target in sats: " + Math.round(max_fee_sats))
+      console.log("Fees in msats: " + route.fee_mtokens + " >= Fee Target in msats: " + max_fee_msats)
+      process.exit(1)
+    }
+
     console.log('==========================================')
 
 
