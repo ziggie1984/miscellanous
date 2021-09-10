@@ -37,6 +37,7 @@ This does ONLY work if all participant of the ROF have their channelfees also se
 * Select the amount you want to send `const amount_sats = 10;`
 * finally you have the choice to either just probe the network for this you have to set `const final_payment = false` or sent the final payment
 then you have to set the variabel to `const final_payment = true`
+* Excecute the script with the following command: `node igniter2_0.js` (ignore warnings)
 
 
 
