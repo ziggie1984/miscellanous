@@ -26,7 +26,7 @@ const {lnd} = await authenticatedLndGrpc({
   //Fill all the channels separating by a comma; beginning with your channel
   //Standard Channel Format for example: 697722x1529x0
   const channelids_standardformat = ['699867x1878x0','699868x1530x1','699804x759x1','699872x1648x1','699822x1842x1','699835x1781x1','699804x2310x0','699822x1818x1','699824x914x0',
-                                    'gunslinger-freakyblitz', '699814x2050x1','699763x1732x1']
+                                    '699896x995x1', '699814x2050x1','699763x1732x1']
 
   
   //const channelids_normalformat = ['767153452055330816', '765827441025417217','767133660778397696','753717419910889472','767146855051362304']
