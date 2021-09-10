@@ -49,7 +49,7 @@ const {lnd} = await authenticatedLndGrpc({
   
     //set max fee you are willing to pay Default 100 ppm
 
-  const feerate = 500
+  const feerate = 100
 
   //or set to a specific value
   const max_fee_sats =  feerate * Math.pow(10, -6) * amount_sats
