@@ -36,7 +36,7 @@ const {lnd} = await authenticatedLndGrpc({
 //                      {pub_key:'0205019fc1d5d0d94987279f25603b6d5e81a61e54b0386f88c5ac44b646cf8287' ,alias: 'Altbierjupp'},
 //                      {pub_key:'02826f50035eca93c7ebfbad4f9621a8eb201f4e28f994db5b6b5af32a65efb6b9', alias: 'hippiessabotage'}]
 
-  console.log(channelids_normalformat)
+ // console.log(channelids_normalformat)
 
 
   //Set this to false if you are using channelids in the normalformat
@@ -97,7 +97,7 @@ const {lnd} = await authenticatedLndGrpc({
     for (let i = 0; i < channelids_normalformat.length; i++) 
     {
         id = (await chanFormat({number: channelids_normalformat[i]})).channel
-        console.log(id)
+        //console.log(id)
         channel = await getChannel({lnd,id})
         //console.log(channel)
         routing_channels.push(channel)
@@ -138,17 +138,16 @@ const {lnd} = await authenticatedLndGrpc({
 
 
   const invoice = await createInvoice({lnd,mtokens});
-  console.log('==========================================')
-  console.log('Invoice (do not share your secret!!!!):')
-  console.log(invoice)
-  console.log('==========================================')
+  //console.log('==========================================')
+  //console.log('Invoice (do not share your secret!!!!):')
+  //console.log(invoice)
+  //console.log('==========================================')
   const payment = invoice.payment
   const imtokens = invoice.mtokens
   const id_payment = invoice.id
 
 
   var {route} = await routeFromChannels({channels: routing_channels ,destination,cltv_delta: 200, height: height ,messages:[], mtokens : imtokens,payment: payment, total_mtokens:imtokens});
- // console.log(route)
 
   console.log('Final Route: ')
   console.log(route)
