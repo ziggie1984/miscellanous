@@ -54,7 +54,6 @@ NB: if you have a 3-node Route from your NodeA to a NodeB to a NodeC and back to
 
 
 
-* Excecute the script with the following command: `node igniter2_0.js` (ignore warnings)
 
 
 
