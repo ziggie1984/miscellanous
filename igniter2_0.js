@@ -22,22 +22,35 @@ const {lnd} = await authenticatedLndGrpc({
 });
 
 
+
   //Fill all the channels separating by a comma; beginning with your channel
   //Standard Channel Format for example: 697722x1529x0
   const channelids_standardformat = ['707706x1090x0','707703x1491x1','707706x1090x0']
 
-  const channelids_normalformat = ['770613615060320256','770295856297672704','767138058930880512','778216738014822401']
+  //First ChannelID is the one from the Igniter Node to the next Peer
+  //Last ChannelID is the channel to the Igniter Node
+
+  const channelids_normalformat = ['780118893081853954','780177167338962945','780124390737707008','780150779012513792','780127689259548673']
 
 
-//  const pubkey_array = [
-//	              {pub_key:'02826f50035eca93c7ebfbad4f9621a8eb201f4e28f994db5b6b5af32a65efb6b9', alias:' hippiessabotage'},
-//                      {pub_key:'022d365c7719d22f28880ee8564acedf3bf6a401b3ca0ee28eeb1bd72700215b07' ,alias: 'ECB'},
-//                      {pub_key:'02ba62f2cf65a10b9867477f266e67ef7e5f34b8b8b128916497bf54e0603a4693', alias: 'Anathos'},
-//                      {pub_key:'0205019fc1d5d0d94987279f25603b6d5e81a61e54b0386f88c5ac44b646cf8287' ,alias: 'Altbierjupp'},
-//                      {pub_key:'02826f50035eca93c7ebfbad4f9621a8eb201f4e28f994db5b6b5af32a65efb6b9', alias: 'hippiessabotage'}]
+  //In Case you want to set fees manually uncomment the array below, sometimes it can happen that the policies are not in
+  //in your graph and are undefined. Then you can specifiy the fees (fake policy) normally set to 1000 mSat Basefee and 1 ppm feerate
 
- // console.log(channelids_normalformat)
+  //When you don't use indiviualfee = true YOU DONT HAVE TO PUT IN THE PUBKEYS!!!!! ChannelIDS in the right order are SUFFICANT
+  
 
+const pubkey_array = [
+                      {pub_key:'02826f50035eca93c7ebfbad4f9621a8eb201f4e28f994db5b6b5af32a65efb6b9', alias: '',fee_rate: 1,cltv_delta: 40,base_fee_mtokens: '1000'},
+                      {pub_key:'0258adfbecc79c65f5d32ff0d7e9da6dc5e765140a8e8de7ed5ca0c6a4f6d37fb3', alias: '',fee_rate: 1,cltv_delta: 40,base_fee_mtokens: '1000'},
+                      {pub_key:'02bc320249b608a53a76cf3cbd448fdd3ab8f3766f96e8649c2edc26cf03bf8277' ,alias: '',fee_rate: 1,cltv_delta: 40,base_fee_mtokens: '1000'},
+                      {pub_key:'02b2d5b1e3167287ea4d1835e5272d99f7beb8c283f7a27d15198270630d3eb23a' ,alias: '',fee_rate: 1,cltv_delta: 40,base_fee_mtokens: '1000'},
+                      {pub_key:'034997db2fa4563a86b0a06103944ad8eb5c2ff013e58afaa90f3de8a7bfd2b6d6', alias: '',fee_rate: 1,cltv_delta: 40,base_fee_mtokens: '1000'}
+                    ]
+
+
+  //Set Fees individually for channels
+
+  const individualfee = false
 
   //Set this to false if you are using channelids in the normalformat
   const channelstandarformat = false
@@ -50,7 +63,7 @@ const {lnd} = await authenticatedLndGrpc({
 
   //amount to Send
 
-  const amount_sats = 10000
+  const amount_sats = 1000000
 
   //set max fee you are willing to pay Default 100 ppm
 
@@ -58,11 +71,10 @@ const {lnd} = await authenticatedLndGrpc({
 
   //or set to a specific value
   //const max_fee_sats =  feerate * Math.pow(10, -6) * amount_sats
-  const max_fee_sats =  5000
+  const max_fee_sats =  10
 
   //Final Payment or Just Probing
   const final_payment = false
-
 
 
 
@@ -75,26 +87,26 @@ const {lnd} = await authenticatedLndGrpc({
   var channel = {}
   var id = ''
 
-  if (channelstandarformat === true) 
+  if (channelstandarformat === true)
   {
 
     //console.log('Format of Channels is Standard e.g. 697722x1529x0')
-      for (let i = 0; i < channelids_standardformat.length; i++) 
+      for (let i = 0; i < channelids_standardformat.length; i++)
       {
           channel = await getChannel({lnd,id: channelids_standardformat[i]})
           routing_channels.push(channel)
           //console.log(channel.policies)
-   
+
       }
 
 
   }
 
-  else 
+  else
   {
 
 
-    for (let i = 0; i < channelids_normalformat.length; i++) 
+    for (let i = 0; i < channelids_normalformat.length; i++)
     {
         id = (await chanFormat({number: channelids_normalformat[i]})).channel
         //console.log(id)
@@ -107,13 +119,9 @@ const {lnd} = await authenticatedLndGrpc({
 
   }
 
-
   //console.log(routing_channels)
 
-  const hops = []
 
-
- 
   //Force Fees to Zero, if igniting a channel
   if (forcezerofee === true){
     console.log('Zerofee is forced')
@@ -131,6 +139,38 @@ const {lnd} = await authenticatedLndGrpc({
   }
 
 
+
+
+  const hops = []
+
+  if (individualfee === true){
+
+
+    for (let i = 0; i < routing_channels.length; i++) {
+      for (let j = 0; j < routing_channels[i].policies.length; j++) {
+        if (routing_channels[i].policies[j].public_key === pubkey_array[i].pub_key){
+
+          hop =   {
+            channel:routing_channels[i].id ,
+            channel_capacity: routing_channels[i].capacity,
+            base_fee_mtokens:pubkey_array[i].base_fee_mtokens ,
+            fee_rate: pubkey_array[i].fee_rate,
+            cltv_delta:pubkey_array[i].cltv_delta,
+            public_key: pubkey_array[(i+1)%pubkey_array.length].pub_key
+
+          }
+          //console.log('ppm: ' + 'ChanNumber' + i + routing_channels[i].policies[j].fee_rate )
+
+          hops.push(hop)
+        }
+      }
+    }
+  }
+
+  //console.log(hops)
+
+
+
   const height = (await getHeight({lnd})).current_block_height;
 
   const mtokens = String(amount_sats * 1000);
@@ -146,10 +186,25 @@ const {lnd} = await authenticatedLndGrpc({
   const imtokens = invoice.mtokens
   const id_payment = invoice.id
 
+  if (forcezerofee === true || individualfee === false){
 
-  var {route} = await routeFromChannels({channels: routing_channels ,destination,cltv_delta: 200, height: height ,messages:[], mtokens : imtokens,payment: payment, total_mtokens:imtokens});
+      var {route} = await routeFromChannels({channels: routing_channels ,destination,cltv_delta: 200, height: height ,messages:[], mtokens : imtokens,payment: payment, total_mtokens:imtokens});
+      console.log(route)
 
-  console.log('Final Route: ')
+   }
+  else if (individualfee === true){
+
+
+
+      var route = await routeFromHops({cltv_delta: 200, height: height,initial_cltv: 40, hops:hops, messages:[],mtokens:imtokens,payment: payment,total_mtokens:imtokens} )
+
+
+   }
+
+
+
+
+  console.log('!!!!!!!!!!Final Route:!!!!!!!!!!!!!! ')
   console.log(route)
 
   const max_fee_msats = max_fee_sats * 1000
@@ -172,13 +227,13 @@ const {lnd} = await authenticatedLndGrpc({
 
 
 
-
   if (final_payment === true){
 
     try{
       console.log("PayViaRoute")
       const payment_output = await payViaRoutes({lnd,id: id_payment, routes: [route]});
-      console.log("Success: Payment Preimage:" + payment_output)
+      console.log("Success: Payment Preimage:")
+      console.log("%o", payment_output)
 
     }
     catch(err){
@@ -188,6 +243,7 @@ const {lnd} = await authenticatedLndGrpc({
     }
 
   }
+
   else {
     try{
       const preimage = (await payViaRoutes({lnd, routes: [route]})).secret;
@@ -214,10 +270,9 @@ const {lnd} = await authenticatedLndGrpc({
 
     }
 
-  } 
+  }
 
 
 }
 
 main()
-
