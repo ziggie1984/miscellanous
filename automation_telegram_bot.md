@@ -36,6 +36,6 @@ I will use the Systemd Software Manger Tool (part of every linux distribution) t
     [Install]
     WantedBy=multi-user.target 
  6. save file and then type the following command in the terminal: `sudo systemctl enable bos-telegram.service`
- 7. reboot your node
+ 7. sudo systemctl start bos-telegram.service or reboot your node
  8. wait until your telegram bot shows the new connection to check whether the service is running properly you can type: `sudo systemctl status  bos-telegram.service`
 
