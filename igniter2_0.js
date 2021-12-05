@@ -189,7 +189,7 @@ const pubkey_array = [
   if (forcezerofee === true || individualfee === false){
 
       var {route} = await routeFromChannels({channels: routing_channels ,destination,cltv_delta: 200, height: height ,messages:[], mtokens : imtokens,payment: payment, total_mtokens:imtokens});
-      console.log(route)
+      //console.log(route)
 
    }
   else if (individualfee === true){
