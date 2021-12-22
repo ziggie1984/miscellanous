@@ -1,5 +1,7 @@
 # Igniter2.0
 
+## This Project got an update, a real CMD-Tool you can find here ❗️❗️: [ringtooljs](https://github.com/lncapital/ringtooljs)
+
 This tool is used to ignite ROFs or can also be used to rebalance a specific channel. With this tool you don't have to wait for the Gossip to propagate instead you can force 0 fees.
 
 ## Prerequesites 
